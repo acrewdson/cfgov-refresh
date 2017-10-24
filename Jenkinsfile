@@ -11,7 +11,6 @@ pipeline {
             steps {
                 parallel(
                     "Front-End Tests": {
-                        echo 'Hello front-end!'
                         sh 'run_travis.sh frontend'
                     },
                     "Back-End Tests": {
@@ -19,7 +18,7 @@ pipeline {
                     },
                     "Acceptance Tests": {
                         echo 'Hello acceptance!'
-                        sh 'run_travis.sh acceptance'
+                        sh './run_travis.sh acceptance'
                     }
                 )
             }
