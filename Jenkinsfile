@@ -11,13 +11,12 @@ pipeline {
             steps {
                 parallel(
                     "Front-End Tests": {
-                        sh 'run_travis.sh frontend'
+                        sh './run_travis.sh frontend'
                     },
                     "Back-End Tests": {
-                        sh 'run_travis.sh backend'
+                        sh './run_travis.sh backend'
                     },
                     "Acceptance Tests": {
-                        echo 'Hello acceptance!'
                         sh './run_travis.sh acceptance'
                     }
                 )
