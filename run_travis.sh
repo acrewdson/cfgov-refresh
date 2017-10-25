@@ -9,7 +9,7 @@ if [ -z $RUNTEST ]; then
 fi
 
 # Install frontend dependencies
-frontend() {
+install_frontend() {
     export CXX=clang++
 
     if [[ "$(node -v)" != 'v8.'* ]]; then
@@ -20,15 +20,12 @@ frontend() {
 
     npm install -g gulp-cli
 
-    # Added to fix an issue with gulp not being accessible in run_travis.sh
-    echo 'PATH=/home/travis/.nvm/versions/node/v8.0.0/lib/node_modules/gulp-cli/bin/gulp.js:$PATH' >> ~/.bash_profile
-
     chmod +x ./frontend.sh
     ./frontend.sh test
 }
 
 # Install backend dependencies
-backend() {
+install_backend() {
     # Use .venv as the virtualenv path if not already defined.
     VIRTUALENV_PATH=".venv"
 
@@ -48,20 +45,16 @@ backend() {
 
 echo "running $RUNTEST tests"
 if [ "$RUNTEST" == "frontend" ]; then
-    frontend
-    source $HOME/.nvm/nvm.sh
+    install_frontend
     gulp "test" --travis
 elif [ "$RUNTEST" == "backend" ]; then
-    tox -e lint
+    install_backend
+    flake8
     tox -e fast
     tox -e missing-migrations
-elif [ "$RUNTEST" == "backend3" ]; then
-    tox -e lint-py3
-    tox -e fast-py3
 elif [ "$RUNTEST" == "acceptance" ]; then
-    frontend
-    backend
-    source $HOME/.nvm/nvm.sh
+    install_frontend
+    install_backend
     export DISPLAY=:99.0
     sh -e /etc/init.d/xvfb start &
     sleep 3
