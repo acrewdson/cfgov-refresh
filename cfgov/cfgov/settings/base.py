@@ -638,6 +638,8 @@ FLAGS = {
 
     # The release of new Whistleblowers content/pages
     'WHISTLEBLOWER_RELEASE': {},
+    # Menu draft state
+    'DRAFT_MENU': {},
 }
 
 
